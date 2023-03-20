@@ -430,10 +430,13 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 /Recordings/
+Recordings/
 /Library/
 Library/
 /Packages/
+Packages/
 /Screenshots/
+Packages/
 /FeelDemos/
 /FeelDemosHDRP/
 /FeelDemosURP/
