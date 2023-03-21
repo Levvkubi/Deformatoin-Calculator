@@ -11,10 +11,10 @@ public class GraphicsDrawer  : MonoBehaviour
     [SerializeField] private GameObject edgePrefab;
 
 
-    public void Draw(int npq, float[,] AKT, List<int> verticesIndx, List<int> edgesIndx, List<int> edgesDir, int lx = 1, int ly = 1, int lz = 1)
+    public void Draw(int npq, float[,] AKT, List<int> verticesIndx, List<int> edgesIndx, List<int> edgesDir, float lx = 1, float ly = 1, float lz = 1)
     {
         if (diffEdges)
-            drawWithEdges(npq, AKT, verticesIndx, edgesIndx, edgesDir);
+            drawWithEdges(npq, AKT, verticesIndx, edgesIndx, edgesDir, lx, ly, lz);
         else
             draw(npq, AKT);
     }
@@ -29,7 +29,7 @@ public class GraphicsDrawer  : MonoBehaviour
         }
     }
 
-    private void drawWithEdges(int npq, float[,] AKT, List<int> verticesIndx, List<int> edgesIndx, List<int> edgesDir, int lx = 1, int ly = 1, int lz = 1)
+    private void drawWithEdges(int npq, float[,] AKT, List<int> verticesIndx, List<int> edgesIndx, List<int> edgesDir, float lx = 1, float ly = 1, float lz = 1)
     {
         foreach (var i in verticesIndx)
         {

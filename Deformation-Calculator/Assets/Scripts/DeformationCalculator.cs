@@ -70,7 +70,7 @@ public class DeformationCalculator : MonoBehaviour
             NTCalculator.logNT(NT, nel);
 
 
-        drawer.Draw(npq, AKT, verticesIndx, edgesIndx, edgesDir);
+        drawer.Draw(npq, AKT, verticesIndx, edgesIndx, edgesDir, lx, ly, lz);
 
 
         // DJ = DJCalculator.CalculateDJ(AKT, NT, 0, DFIABG);
