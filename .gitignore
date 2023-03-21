@@ -433,6 +433,8 @@ crashlytics-build.properties
 Recordings/
 /Library/
 Library/
+/Temp/
+Temp/
 /Packages/
 Packages/
 /Screenshots/

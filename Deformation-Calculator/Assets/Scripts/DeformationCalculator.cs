@@ -18,14 +18,14 @@ public class DeformationCalculator : MonoBehaviour
     public int[,,] DFIABG;
     public int ng;
 
-    private AKTCreator AKTC;
-    private Visualizer visualizer;
+    private AKTGenerator AKTG;
+    private GraphicsDrawer  visualizer;
     void Start()
     {
-        AKTC = GetComponent<AKTCreator>();
-        visualizer = GetComponent<Visualizer>();
+        AKTG = GetComponent<AKTGenerator>();
+        visualizer = GetComponent<GraphicsDrawer >();
 
-        AKTC.Create();
+        AKTG.Create();
         visualizer.Drow();
     }
 

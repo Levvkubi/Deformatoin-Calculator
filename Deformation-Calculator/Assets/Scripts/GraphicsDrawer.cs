@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Visualizer : MonoBehaviour
+public class GraphicsDrawer  : MonoBehaviour
 {
 
     [SerializeField] private bool diffEdges;
@@ -12,12 +12,12 @@ public class Visualizer : MonoBehaviour
     [SerializeField] private GameObject edgePrefab;
 
     private DeformationCalculator DC;
-    private AKTCreator AKTC;
+    private AKTGenerator AKTG;
 
     private void Awake()
     {
         DC = GetComponent<DeformationCalculator>();
-        AKTC = GetComponent<AKTCreator>();
+        AKTG = GetComponent<AKTGenerator>();
     }
     void Start()
     {
@@ -44,7 +44,7 @@ public class Visualizer : MonoBehaviour
 
     private void drawWithEdges()
     {
-        foreach (var i in AKTC.verticesIndx)
+        foreach (var i in AKTG.verticesIndx)
         {
             createPoint(pointPrefab,
                        new Vector3(DC.AKT[0, i], -DC.AKT[1, i], DC.AKT[2, i]),
@@ -52,24 +52,24 @@ public class Visualizer : MonoBehaviour
                        $"Vertex {i + 1}");
         }
 
-        for (int i = 0; i < AKTC.edgesIndx.Count; i++)
+        for (int i = 0; i < AKTG.edgesIndx.Count; i++)
         {
             Quaternion rotation;
             float edgeLenht;
-            switch (AKTC.edgesDir[i])
+            switch (AKTG.edgesDir[i])
             {
                 case 1:
                     rotation = Quaternion.LookRotation(Vector3.right);
-                    edgeLenht = AKTC.lx;
+                    edgeLenht = AKTG.lx;
 
                     break;
                 case 2:
                     rotation = Quaternion.LookRotation(Vector3.up);
-                    edgeLenht = AKTC.ly;
+                    edgeLenht = AKTG.ly;
                     break;
                 case 3:
                     rotation = Quaternion.LookRotation(Vector3.forward);
-                    edgeLenht = AKTC.lz;
+                    edgeLenht = AKTG.lz;
                     break;
                 default:
                     rotation = Quaternion.identity;
@@ -78,11 +78,11 @@ public class Visualizer : MonoBehaviour
             }
 
             var edge = createPoint(edgePrefab,
-                       new Vector3(DC.AKT[0, AKTC.edgesIndx[i]], -DC.AKT[1, AKTC.edgesIndx[i]], DC.AKT[2, AKTC.edgesIndx[i]]),
+                       new Vector3(DC.AKT[0, AKTG.edgesIndx[i]], -DC.AKT[1, AKTG.edgesIndx[i]], DC.AKT[2, AKTG.edgesIndx[i]]),
                        rotation,
-                       $"Edge {AKTC.edgesIndx[i] + 1}");
+                       $"Edge {AKTG.edgesIndx[i] + 1}");
 
-            if (AKTC.useCustomProportins)
+            if (AKTG.useCustomProportins)
                 edge.transform.localScale = new Vector3(
                     edge.transform.localScale.x,
                     edge.transform.localScale.y,

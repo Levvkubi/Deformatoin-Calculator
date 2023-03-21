@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AKTCreator : MonoBehaviour
+public class AKTGenerator : MonoBehaviour
 {
-    public bool useCustomProportins { get; private set; }
+    public bool useCustomProportins;
     [SerializeField] private bool showNT;
 
     [Space]
