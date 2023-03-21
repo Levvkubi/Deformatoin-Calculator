@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 public static class DJCalculator
 {
-    public static float[,,] CalculateDJ(int[,] AKT,int [,] NT, int el, float[,,] DFIABG)
+    public static float[,,] CalculateDJ(float[,] AKT,int [,] NT, int el, float[,,] DFIABG)
     {
         float[,,] DJ = new float[27, 3, 3];
 
@@ -41,8 +40,8 @@ public static class DJCalculator
             }
             res += "\n";
         }
-
-        File.WriteAllText(@"D:\dfi.txt", res);
+        File.Create(@"D:\DJ.txt");
+        File.WriteAllText(@"D:\DJ.txt", res);
     }
     public static float CalculateDeterminant3x3(float[,] matrix)
     {

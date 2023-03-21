@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,7 +29,7 @@ public class DeformationCalculator : MonoBehaviour
     [SerializeField] private int nel;
     [SerializeField] private int[,] NT;
     [SerializeField] private int[] NTMaxLen;
-    [SerializeField] private int[,,] DFIABG;
+    [SerializeField] private float[,,] DFIABG;
     [SerializeField] private int ng;
     [SerializeField] private float[,,] DJ;
 
@@ -72,8 +71,9 @@ public class DeformationCalculator : MonoBehaviour
 
         drawer.Draw(npq, AKT, verticesIndx, edgesIndx, edgesDir, lx, ly, lz);
 
-
-        // DJ = DJCalculator.CalculateDJ(AKT, NT, 0, DFIABG);
+        DFIABG = DFIABGCalculator.CalculateDFIABG();
+        DJ = DJCalculator.CalculateDJ(AKT, NT, 0, DFIABG);
+        DJCalculator.writeIntoFile(DJ);
     }
 
     private int[] sideToPoints(int elNT, int side)

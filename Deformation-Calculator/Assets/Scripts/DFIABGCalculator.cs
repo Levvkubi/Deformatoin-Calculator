@@ -29,7 +29,7 @@ public static class DFIABGCalculator
         File.WriteAllText(@"D:\dfi.txt", res);
     }
 
-    public static void GenerateDFIABG()
+    public static float[,,] CalculateDFIABG()
     {   
         float [,,] DFIABG = new float[27,3,20];
 
@@ -59,6 +59,8 @@ public static class DFIABGCalculator
                 }
             }
         }
+
+        return DFIABG;
     }
 
     private static float verticleA(float a, float b, float g, float ai, float bi, float gi)
