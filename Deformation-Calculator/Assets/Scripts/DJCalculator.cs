@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 public static class DJCalculator
 {
@@ -24,6 +25,24 @@ public static class DJCalculator
         }
 
         return DJ;
+    }
+    public static void writeIntoFile(float[,,] DJ)
+    {
+        string res = string.Empty;
+        for (int i = 0; i < 27; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+                    res += Math.Round(DJ[i, j, k], 5).ToString() + "\t";
+                }
+                res += "\n";
+            }
+            res += "\n";
+        }
+
+        File.WriteAllText(@"D:\dfi.txt", res);
     }
     public static float CalculateDeterminant3x3(float[,] matrix)
     {

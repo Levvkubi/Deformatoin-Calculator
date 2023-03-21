@@ -4,72 +4,59 @@ using UnityEngine;
 
 public class GraphicsDrawer  : MonoBehaviour
 {
-
     [SerializeField] private bool diffEdges;
 
     [Space]
     [SerializeField] private GameObject pointPrefab;
     [SerializeField] private GameObject edgePrefab;
 
-    private DeformationCalculator DC;
-    private AKTGenerator AKTG;
 
-    private void Awake()
-    {
-        DC = GetComponent<DeformationCalculator>();
-        AKTG = GetComponent<AKTGenerator>();
-    }
-    void Start()
-    {
-        
-    }
-
-    public void Drow()
+    public void Draw(int npq, float[,] AKT, List<int> verticesIndx, List<int> edgesIndx, List<int> edgesDir, int lx = 1, int ly = 1, int lz = 1)
     {
         if (diffEdges)
-            drawWithEdges();
+            drawWithEdges(npq, AKT, verticesIndx, edgesIndx, edgesDir);
         else
-            draw();
+            draw(npq, AKT);
     }
-    private void draw()
+    private void draw(int npq, float[,] AKT)
     {
-        for (int i = 0; i < DC.npq; i++)
+        for (int i = 0; i < npq; i++)
         {
             createPoint(pointPrefab,
-                        new Vector3(DC.AKT[0, i], DC.AKT[1, i], DC.AKT[2, i]),
+                        new Vector3(AKT[0, i], AKT[1, i], AKT[2, i]),
                         Quaternion.identity,
                         $"Point {i + 1}");
         }
     }
 
-    private void drawWithEdges()
+    private void drawWithEdges(int npq, float[,] AKT, List<int> verticesIndx, List<int> edgesIndx, List<int> edgesDir, int lx = 1, int ly = 1, int lz = 1)
     {
-        foreach (var i in AKTG.verticesIndx)
+        foreach (var i in verticesIndx)
         {
             createPoint(pointPrefab,
-                       new Vector3(DC.AKT[0, i], -DC.AKT[1, i], DC.AKT[2, i]),
+                       new Vector3(AKT[0, i], -AKT[1, i], AKT[2, i]),
                        Quaternion.identity,
                        $"Vertex {i + 1}");
         }
 
-        for (int i = 0; i < AKTG.edgesIndx.Count; i++)
+        for (int i = 0; i < edgesIndx.Count; i++)
         {
             Quaternion rotation;
             float edgeLenht;
-            switch (AKTG.edgesDir[i])
+            switch (edgesDir[i])
             {
                 case 1:
                     rotation = Quaternion.LookRotation(Vector3.right);
-                    edgeLenht = AKTG.lx;
+                    edgeLenht = lx;
 
                     break;
                 case 2:
                     rotation = Quaternion.LookRotation(Vector3.up);
-                    edgeLenht = AKTG.ly;
+                    edgeLenht = ly;
                     break;
                 case 3:
                     rotation = Quaternion.LookRotation(Vector3.forward);
-                    edgeLenht = AKTG.lz;
+                    edgeLenht = lz;
                     break;
                 default:
                     rotation = Quaternion.identity;
@@ -78,15 +65,14 @@ public class GraphicsDrawer  : MonoBehaviour
             }
 
             var edge = createPoint(edgePrefab,
-                       new Vector3(DC.AKT[0, AKTG.edgesIndx[i]], -DC.AKT[1, AKTG.edgesIndx[i]], DC.AKT[2, AKTG.edgesIndx[i]]),
+                       new Vector3(AKT[0, edgesIndx[i]], -AKT[1, edgesIndx[i]], AKT[2, edgesIndx[i]]),
                        rotation,
-                       $"Edge {AKTG.edgesIndx[i] + 1}");
+                       $"Edge {edgesIndx[i] + 1}");
 
-            if (AKTG.useCustomProportins)
-                edge.transform.localScale = new Vector3(
-                    edge.transform.localScale.x,
-                    edge.transform.localScale.y,
-                    edge.transform.localScale.z * edgeLenht);
+            edge.transform.localScale = new Vector3(
+                edge.transform.localScale.x,
+                edge.transform.localScale.y,
+                edge.transform.localScale.z * edgeLenht);
         }
     }
 

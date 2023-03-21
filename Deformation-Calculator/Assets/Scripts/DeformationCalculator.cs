@@ -4,29 +4,76 @@ using UnityEngine;
 
 public class DeformationCalculator : MonoBehaviour
 {
+    [Space]
+    [SerializeField] private int nx;
+    [SerializeField] private int ny;
+    [SerializeField] private int nz;
+
+    [Space]
+    [SerializeField] private bool useCustomProportins;
+
+    [Space]
+    [SerializeField] private int ax;
+    [SerializeField] private int ay;
+    [SerializeField] private int az;
+
+    [Space]
+    [SerializeField] private bool showNT;
 
     [Space]
     [SerializeField] private List<Vector2> ZP;
     [SerializeField] private List<Vector2> ZU;
 
     [Space]
-    public int npq;
-    public float[,] AKT;
-    public int nel;
-    public int[,] NT;
-    public int[] NTMaxLen;
-    public int[,,] DFIABG;
-    public int ng;
+    [SerializeField] private int npq;
+    [SerializeField] private float[,] AKT;
+    [SerializeField] private int nel;
+    [SerializeField] private int[,] NT;
+    [SerializeField] private int[] NTMaxLen;
+    [SerializeField] private int[,,] DFIABG;
+    [SerializeField] private int ng;
+    [SerializeField] private float[,,] DJ;
 
-    private AKTGenerator AKTG;
-    private GraphicsDrawer  visualizer;
+    private List<int> verticesIndx;
+    private List<int> edgesIndx;
+    private List<int> edgesDir;
+
+    private static float lx, ly, lz;
+
+    private GraphicsDrawer  drawer;
     void Start()
     {
-        AKTG = GetComponent<AKTGenerator>();
-        visualizer = GetComponent<GraphicsDrawer >();
+        drawer = GetComponent<GraphicsDrawer >();
 
-        AKTG.Create();
-        visualizer.Drow();
+        if (useCustomProportins)
+        {
+            lx = ax / (float)nx;
+            ly = ay / (float)ny;
+            lz = az / (float)nz;
+        }
+        else
+        {
+            lx = 1;
+            ly = 1;
+            lz = 1;
+        }
+
+        verticesIndx = new List<int>();
+        edgesIndx = new List<int>();
+        edgesDir = new List<int>();
+
+        AKT = AKTGenerator.GenerateAKT(nx, ny, nz, lx, ly, lz, out npq, verticesIndx, edgesIndx, edgesDir);
+        NT = NTCalculator.CalculateNT(nx, ny, nz, out nel);
+        ng = NTCalculator.CalcualteNg(NT, nel);
+
+        if (showNT)
+            NTCalculator.logNT(NT, nel);
+
+
+        drawer.Draw(npq, AKT, verticesIndx, edgesIndx, edgesDir);
+
+
+        // DJ = DJCalculator.CalculateDJ(AKT, NT, 0, DFIABG);
     }
 
     private int[] sideToPoints(int elNT, int side)
