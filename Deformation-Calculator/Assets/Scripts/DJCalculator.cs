@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class DJCalculator
 {
-    public static double[,,] CalculateDJ(float[,] AKT,int [,] NT, int el, float[,,] DFIABG)
+    public static double[,,] CalculateDJ(double[,] AKT,int [,] NT, int el, double[,,] DFIABG)
     {
         double[,,] DJ = new double[27, 3, 3];
 
@@ -14,7 +14,7 @@ public static class DJCalculator
             {
                 for (int x = 0; x < 3; x++)
                 {
-                    float sum = 0;
+                    double sum = 0;
                     for (int k = 0; k < 20; k++)
                     {
                         sum += AKT[x, NT[k, el]] * DFIABG[g, a, k];
