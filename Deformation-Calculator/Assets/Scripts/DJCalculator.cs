@@ -1,13 +1,14 @@
 using System;
 using System.IO;
+using UnityEngine;
 
 public static class DJCalculator
 {
-    public static float[,,] CalculateDJ(float[,] AKT,int [,] NT, int el, float[,,] DFIABG)
+    public static double[,,] CalculateDJ(float[,] AKT,int [,] NT, int el, float[,,] DFIABG)
     {
-        float[,,] DJ = new float[27, 3, 3];
+        double[,,] DJ = new double[27, 3, 3];
 
-        for (int i = 0; i < 27; i++)
+        for (int g = 0; g < 27; g++)
         {
             for (int a = 0; a < 3; a++)
             {
@@ -16,16 +17,33 @@ public static class DJCalculator
                     float sum = 0;
                     for (int k = 0; k < 20; k++)
                     {
-                        sum += AKT[x, NT[k, el]] * DFIABG[i, a, k];
+                        sum += AKT[x, NT[k, el]] * DFIABG[g, a, k];
                     }
-                    DJ[i, a, x] = sum;
+                    DJ[g, a, x] = sum;
                 }
             }
         }
 
         return DJ;
     }
-    public static void writeIntoFile(float[,,] DJ)
+    public static void writeIntoConsole(double[,,] DJ)
+    {
+        string res = string.Empty;
+        for (int i = 0; i < 27; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+                    res += Math.Round(DJ[i, j, k], 5).ToString() + "\t";
+                }
+                Debug.Log(res);
+                res = string.Empty;
+            }
+            Debug.Log(res);
+        }
+    }
+    public static void writeIntoFile(double[,,] DJ)
     {
         string res = string.Empty;
         for (int i = 0; i < 27; i++)
@@ -40,16 +58,21 @@ public static class DJCalculator
             }
             res += "\n";
         }
-        File.Create(@"D:\DJ.txt");
+        //File.Create(@"D:\DJ.txt");
         File.WriteAllText(@"D:\DJ.txt", res);
+        //FileStream fileStream = new FileStream(@"D:\DJ.txt",
+        //                               FileMode.OpenOrCreate,
+        //                               FileAccess.ReadWrite,
+        //                               FileShare.None);
+        //fileStream.Write(res);
     }
-    public static float CalculateDeterminant3x3(float[,] matrix)
+    public static double CalculateDeterminant3x3(double[,,] matrix,int el)
     {
-        if(matrix.Length != 3 || matrix.LongLength != 3)
-            throw new ArgumentException("Invalid matrix size");
+        //if(matrix.Length != 3 || matrix.LongLength != 3)
+        //    throw new ArgumentException("Invalid matrix size");
 
-        return matrix[0, 0] * matrix[1, 1] * matrix[2, 2] + matrix[0, 1] * matrix[1, 2] * matrix[2, 0] +
-               matrix[0, 2] * matrix[1, 0] * matrix[2, 1] + matrix[0, 2] * matrix[1, 1] * matrix[2, 0] +
-               matrix[0, 1] * matrix[1, 0] * matrix[2, 2] + matrix[0, 0] * matrix[1, 2] * matrix[2, 1];
+        return matrix[el, 0, 0] * matrix[el, 1, 1] * matrix[el, 2, 2] + matrix[el, 0, 1] * matrix[el, 1, 2] * matrix[el, 2, 0] +
+               matrix[el, 0, 2] * matrix[el, 1, 0] * matrix[el, 2, 1] + matrix[el, 0, 2] * matrix[el, 1, 1] * matrix[el, 2, 0] +
+               matrix[el, 0, 1] * matrix[el, 1, 0] * matrix[el, 2, 2] + matrix[el, 0, 0] * matrix[el, 1, 2] * matrix[el, 2, 1];
     }
 }

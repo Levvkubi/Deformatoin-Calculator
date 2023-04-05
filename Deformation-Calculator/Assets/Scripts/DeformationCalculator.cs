@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class DeformationCalculator : MonoBehaviour
 {
+    [SerializeField] private int el;
     [Space]
     [SerializeField] private int nx;
     [SerializeField] private int ny;
@@ -25,13 +26,14 @@ public class DeformationCalculator : MonoBehaviour
 
     [Space]
     [SerializeField] private int npq;
-    [SerializeField] private float[,] AKT;
+    [SerializeField] private double[,] AKT;
     [SerializeField] private int nel;
     [SerializeField] private int[,] NT;
     [SerializeField] private int[] NTMaxLen;
-    [SerializeField] private float[,,] DFIABG;
+    [SerializeField] private double[,,] DFIABG;
+    [SerializeField] private double[,,] DFIXYZ;
     [SerializeField] private int ng;
-    [SerializeField] private float[,,] DJ;
+    [SerializeField] private double[,,] DJ;
 
     private List<int> verticesIndx;
     private List<int> edgesIndx;
@@ -68,12 +70,20 @@ public class DeformationCalculator : MonoBehaviour
         if (showNT)
             NTCalculator.logNT(NT, nel);
 
+        //AKT[0,0] = 0.2f;
+        //AKT[1,0] = 0.3f;
+        //AKT[2,0] = 0.4f;
+
 
         drawer.Draw(npq, AKT, verticesIndx, edgesIndx, edgesDir, lx, ly, lz);
 
         DFIABG = DFIABGCalculator.CalculateDFIABG();
-        DJ = DJCalculator.CalculateDJ(AKT, NT, 0, DFIABG);
-        DJCalculator.writeIntoFile(DJ);
+        DJ = DJCalculator.CalculateDJ(AKT, NT, el, DFIABG);
+        DJCalculator.writeIntoConsole(DJ);
+        for (int i = 0; i < 27; i++)
+        {
+            Debug.Log(DJCalculator.CalculateDeterminant3x3(DJ,i));
+        }
     }
 
     private int[] sideToPoints(int elNT, int side)

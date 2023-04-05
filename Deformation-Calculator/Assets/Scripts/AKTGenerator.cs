@@ -2,13 +2,13 @@ using System.Collections.Generic;
 
 public static class AKTGenerator
 {
-    public static float[,] GenerateAKT(int nx,int ny,int nz, float lx, float ly, float lz, out int npq, List<int> verticesIndx, List<int> edgesIndx, List<int> edgesDir)
+    public static double[,] GenerateAKT(int nx,int ny,int nz, float lx, float ly, float lz, out int npq, List<int> verticesIndx, List<int> edgesIndx, List<int> edgesDir)
     { 
         int verticesCount = (nx + 1) * (ny + 1) * (nz + 1);
         int edgesCount = 3 * nx * ny * nz + 2 * nx * ny + 2 * nx * nz + 2 * ny * nz + nx + ny + nz;
         npq = verticesCount + edgesCount;
 
-        float[,] AKT = new float[3, npq];
+        double[,] AKT = new double[3, npq];
 
         verticesIndx.Clear();
         edgesIndx.Clear();

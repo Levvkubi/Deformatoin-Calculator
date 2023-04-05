@@ -10,30 +10,30 @@ public class GraphicsDrawer  : MonoBehaviour
     [SerializeField] private GameObject edgePrefab;
 
 
-    public void Draw(int npq, float[,] AKT, List<int> verticesIndx, List<int> edgesIndx, List<int> edgesDir, float lx = 1, float ly = 1, float lz = 1)
+    public void Draw(int npq, double[,] AKT, List<int> verticesIndx, List<int> edgesIndx, List<int> edgesDir, float lx = 1, float ly = 1, float lz = 1)
     {
         if (diffEdges)
             drawWithEdges(npq, AKT, verticesIndx, edgesIndx, edgesDir, lx, ly, lz);
         else
             draw(npq, AKT);
     }
-    private void draw(int npq, float[,] AKT)
+    private void draw(int npq, double[,] AKT)
     {
         for (int i = 0; i < npq; i++)
         {
             createPoint(pointPrefab,
-                        new Vector3(AKT[0, i], AKT[1, i], AKT[2, i]),
+                        new Vector3((float)AKT[0, i], (float)AKT[1, i], (float)AKT[2, i]),
                         Quaternion.identity,
                         $"Point {i + 1}");
         }
     }
 
-    private void drawWithEdges(int npq, float[,] AKT, List<int> verticesIndx, List<int> edgesIndx, List<int> edgesDir, float lx = 1, float ly = 1, float lz = 1)
+    private void drawWithEdges(int npq, double[,] AKT, List<int> verticesIndx, List<int> edgesIndx, List<int> edgesDir, float lx = 1, float ly = 1, float lz = 1)
     {
         foreach (var i in verticesIndx)
         {
             createPoint(pointPrefab,
-                       new Vector3(AKT[0, i], -AKT[1, i], AKT[2, i]),
+                       new Vector3((float)AKT[0, i], -(float)AKT[1, i], (float)AKT[2, i]),
                        Quaternion.identity,
                        $"Vertex {i + 1}");
         }
@@ -64,7 +64,7 @@ public class GraphicsDrawer  : MonoBehaviour
             }
 
             var edge = createPoint(edgePrefab,
-                       new Vector3(AKT[0, edgesIndx[i]], -AKT[1, edgesIndx[i]], AKT[2, edgesIndx[i]]),
+                       new Vector3((float)AKT[0, edgesIndx[i]], -(float)AKT[1, edgesIndx[i]], (float)AKT[2, edgesIndx[i]]),
                        rotation,
                        $"Edge {edgesIndx[i] + 1}");
 

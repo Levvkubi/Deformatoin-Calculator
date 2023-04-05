@@ -10,30 +10,12 @@ public static class DFIABGCalculator
                                    {-1,1,0}, {1,1,0}, {1,-1,0}, {-1,-1,0},
                                    {0,1,1}, {1,0,1}, {0,-1,1}, {-1,0,1}};
 
-    public static void writeIntoFile(float[,,] DFIABG)
+
+    public static double[,,] CalculateDFIABG()
     {
-        string res = string.Empty;
-        for (int i = 0; i < 27; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                for (int k = 0; k < 20; k++)
-                {
-                    res += Math.Round(DFIABG[i,j,k],5).ToString() + "\t";
-                }
-                res += "\n";
-            }
-            res += "\n";
-        }
+        double[,,] DFIABG = new double[27,3,20];
 
-        File.WriteAllText(@"D:\dfi.txt", res);
-    }
-
-    public static float[,,] CalculateDFIABG()
-    {   
-        float [,,] DFIABG = new float[27,3,20];
-
-        float sq = Mathf.Sqrt(0.6f);
+        double sq = Mathf.Sqrt(0.6f);
         int j = 0;
 
         for (int a = -1; a <= 1; a++)
@@ -63,43 +45,62 @@ public static class DFIABGCalculator
         return DFIABG;
     }
 
-    private static float verticleA(float a, float b, float g, float ai, float bi, float gi)
+    private static double verticleA(double a, double b, double g, double ai, double bi, double gi)
     {
         return pohidnaVerticle(a, b, g, ai, bi, gi);
     }
 
-    private static float verticleB(float a, float b, float g, float ai, float bi, float gi)
+    private static double verticleB(double a, double b, double g, double ai, double bi, double gi)
     {
         return pohidnaVerticle(b, a, g, bi, ai, gi);
     }
 
-    private static float verticleG(float a, float b, float g, float ai, float bi, float gi)
+    private static double verticleG(double a, double b, double g, double ai, double bi, double gi)
     {
         return pohidnaVerticle(g, a, b, gi, ai, bi);
     }
 
-    private static float pohidnaVerticle(float shucana, float x1, float x2, float shucanai, float x1i, float x2i)
+    private static double pohidnaVerticle(double shucana, double x1, double x2, double shucanai, double x1i, double x2i)
     {
         return (1f / 8f) * (1 + x1 * x1i) * (1 + x2 * x2i) * (shucanai * (2 * shucana * shucanai + x1 * x1i + x2 * x2i - 1));
     }
 
-    private static float eadgeA(float a, float b, float g, float ai, float bi, float gi)
+    private static double eadgeA(double a, double b, double g, double ai, double bi, double gi)
     {
         return pohidnaEadge(a, b, g, ai, bi, gi);
     }
 
-    private static float eadgeB(float a, float b, float g, float ai, float bi, float gi)
+    private static double eadgeB(double a, double b, double g, double ai, double bi, double gi)
     {
         return pohidnaEadge(b, a, g, bi, ai, gi);
     }
 
-    private static float eadgeG(float a, float b, float g, float ai, float bi, float gi)
+    private static double eadgeG(double a, double b, double g, double ai, double bi, double gi)
     {
         return pohidnaEadge(g, a, b, gi, ai, bi);
     }
 
-    private static float pohidnaEadge(float a, float b, float g, float ai, float bi, float gi)
+    private static double pohidnaEadge(double a, double b, double g, double ai, double bi, double gi)
     {
         return (1f / 4f) * (b * bi + 1) * (g * gi + 1) * (ai * (-bi * bi * gi * gi * a * a - ai * ai * bi * bi * g * g - ai * ai * gi * gi * b * b + 1) - 2 * bi * bi * gi * gi * a * (a * ai + 1));
+    }
+
+    public static void writeIntoFile(double[,,] DFIABG)
+    {
+        string res = string.Empty;
+        for (int i = 0; i < 27; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                for (int k = 0; k < 20; k++)
+                {
+                    res += Math.Round(DFIABG[i, j, k], 5).ToString() + "\t";
+                }
+                res += "\n";
+            }
+            res += "\n";
+        }
+
+        File.WriteAllText(@"D:\dfi.txt", res);
     }
 }
