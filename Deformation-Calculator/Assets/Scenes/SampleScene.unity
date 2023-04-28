@@ -167,20 +167,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8beb94567d59a849b2f9bf5d63cedd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nx: 4
-  ny: 2
+  el: 0
+  nx: 1
+  ny: 1
   nz: 1
   useCustomProportins: 0
   ax: 2
   ay: 2
   az: 2
-  showNT: 1
+  E: 1
+  V: 0.3
+  Lambda: 0
+  Mu: 0
+  showNT: 0
   ZP: []
   ZU: []
   npq: 0
   nel: 0
-  NTMaxLen: 
   ng: 0
+  NTMaxLen: 
 --- !u!114 &273100449
 MonoBehaviour:
   m_ObjectHideFlags: 0

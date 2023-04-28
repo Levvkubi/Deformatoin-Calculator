@@ -4,7 +4,17 @@ using UnityEngine;
 
 public static class DJCalculator
 {
-    public static double[,,] CalculateDJ(double[,] AKT,int [,] NT, int el, double[,,] DFIABG)
+    public static double[][,,] CalculateDJ(double[,] AKT, int[,] NT, int nel, double[,,] DFIABG)
+    {
+        double[][,,] DJ = new double[nel][,,];
+        for (int i = 0; i < nel; i++)
+        {
+            DJ[i] = calculateCurrDJ(AKT, NT, i, DFIABG);
+        }
+
+        return DJ;
+    }
+    private static double[,,] calculateCurrDJ(double[,] AKT,int [,] NT, int el, double[,,] DFIABG)
     {
         double[,,] DJ = new double[27, 3, 3];
 

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class DeformationCalculator : MonoBehaviour
@@ -18,6 +20,12 @@ public class DeformationCalculator : MonoBehaviour
     [SerializeField] private int az;
 
     [Space]
+    [SerializeField] private double E = 1;
+    [SerializeField] private double V = 0.3;
+    [SerializeField] private double Lambda;
+    [SerializeField] private double Mu;
+
+    [Space]
     [SerializeField] private bool showNT;
 
     [Space]
@@ -29,11 +37,12 @@ public class DeformationCalculator : MonoBehaviour
     [SerializeField] private double[,] AKT;
     [SerializeField] private int nel;
     [SerializeField] private int[,] NT;
+    [SerializeField] private int ng;
     [SerializeField] private int[] NTMaxLen;
     [SerializeField] private double[,,] DFIABG;
-    [SerializeField] private double[,,] DFIXYZ;
-    [SerializeField] private int ng;
-    [SerializeField] private double[,,] DJ;
+    [SerializeField] private double[][,,] DJ;
+    [SerializeField] private double[][,,] DFIXYZ;
+    [SerializeField] private double[,] MGE;
 
     private List<int> verticesIndx;
     private List<int> edgesIndx;
@@ -44,6 +53,9 @@ public class DeformationCalculator : MonoBehaviour
     private GraphicsDrawer  drawer;
     void Start()
     {
+        Lambda = E / ((1 + V) * (1 - 2 * V));
+        Mu = E / (2 * (1 + V));
+
         drawer = GetComponent<GraphicsDrawer >();
 
         if (useCustomProportins)
@@ -78,14 +90,75 @@ public class DeformationCalculator : MonoBehaviour
         drawer.Draw(npq, AKT, verticesIndx, edgesIndx, edgesDir, lx, ly, lz);
 
         DFIABG = DFIABGCalculator.CalculateDFIABG();
-        DJ = DJCalculator.CalculateDJ(AKT, NT, el, DFIABG);
-        DJCalculator.writeIntoConsole(DJ);
-        for (int i = 0; i < 27; i++)
-        {
-            Debug.Log(DJCalculator.CalculateDeterminant3x3(DJ,i));
-        }
-    }
+        DJ = DJCalculator.CalculateDJ(AKT, NT, nel, DFIABG);
 
+        DFIXYZ = DFIXYZCalculator.CalculateDFIXYZ(DFIABG, DJ);
+        //for (int l = 0; l < 10; l++)
+        //{
+        //    for (int i = 0; i < 3; i++)
+        //    {
+        //        string r = string.Empty;
+        //        for (int j = 0; j < 3; j++)
+        //        {
+        //            r += Math.Round(DFIXYZ[j, i, l],5);
+        //            r += "\t";
+        //        }
+
+        //        Debug.Log(r);
+        //    }
+        //}
+        double[][] mge;
+        MGE = MGECalculator.CalculateMGE(DFIXYZ, DJ, AKT, NT, npq, nel, Lambda, V, Mu, out mge);
+        writeMatrixIntoFile(MGE);
+        writeMatrixIntoFile(mge);
+
+        Debug.Log("gg");
+    }
+    public static void writeMatrixIntoFile(double[][] Arr)
+    {
+        string res = string.Empty;
+        for (int i = 0; i < Arr.GetLength(0); i++)
+        {
+            for (int j = 0; j < Arr[i].Length; j++)
+            {
+                double data = Math.Round(Arr[i][j], 2);
+
+                if (data >= 0)
+                    res += "  ";
+                else
+                    res += " ";
+
+                res += $"{data:f2} ";
+
+            }
+            res += "\n";
+            res += "\n";
+        }
+        File.WriteAllText(@"D:\Matrixcc.txt", res);
+    }
+    public static void writeMatrixIntoFile(double[,] Arr)
+    {
+        string res = string.Empty;
+        for (int i = 0; i < Arr.GetLength(0); i++)
+        {
+            for (int j = 0; j < Arr.GetLength(1); j++)
+            //for (int j = 0; j < 30; j++)
+                {
+                double data = Math.Round(Arr[i, j], 2);
+
+                if (data >= 0)
+                    res += "  ";
+                else
+                    res += " ";
+
+                res += $"{data:f2} ";
+                    
+            }
+            res += "\n";
+            res += "\n";
+        }
+        File.WriteAllText(@"D:\Matrix.txt", res);
+    }
     private int[] sideToPoints(int elNT, int side)
     {
         int[] points = new int[8];

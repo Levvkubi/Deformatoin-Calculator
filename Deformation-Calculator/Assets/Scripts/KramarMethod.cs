@@ -1,18 +1,7 @@
 public static class KramarMethod 
 {
-    public static double[] CalculateSLAR(double[,,] dj,int el, double[] constants)
+    public static double[] CalculateSLAR(double[,] coefficients, double[] constants)
     {
-
-        double[,] coefficients = new double[3,3];
-
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                coefficients[i, j] = dj[el,i,j];
-            }
-        }
-
         double detA = Determinant(coefficients);
 
         double[] solutions = new double[3];
