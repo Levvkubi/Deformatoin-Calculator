@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DeformationCalculator : MonoBehaviour
 {
-    [SerializeField] private int el;
+    [SerializeField] private int el;//тимчасова змінна для перевірки
     [Space]
     [SerializeField] private int nx;
     [SerializeField] private int ny;
@@ -116,9 +116,21 @@ public class DeformationCalculator : MonoBehaviour
     }
     public static void writeMatrixIntoFile(double[][] Arr)
     {
-        string res = string.Empty;
+        string res = "      ";
+
         for (int i = 0; i < Arr.GetLength(0); i++)
         {
+            if (i < 10)
+                res += "      " + i.ToString();
+            else
+                res += "     " + i.ToString();
+        }
+
+        res += "\n";
+
+        for (int i = 0; i < Arr.GetLength(0); i++)
+        {
+            res += i.ToString() + "\t";
             for (int j = 0; j < Arr[i].Length; j++)
             {
                 double data = Math.Round(Arr[i][j], 2);
@@ -138,12 +150,23 @@ public class DeformationCalculator : MonoBehaviour
     }
     public static void writeMatrixIntoFile(double[,] Arr)
     {
-        string res = string.Empty;
+        string res = "      ";
+
         for (int i = 0; i < Arr.GetLength(0); i++)
         {
+            if(i<10)
+                res += "      " + i.ToString();
+            else
+                res += "     " +  i.ToString();
+        }
+
+        res += "\n";
+
+        for (int i = 0; i < Arr.GetLength(0); i++)
+        {
+            res += i.ToString() + "\t";
             for (int j = 0; j < Arr.GetLength(1); j++)
-            //for (int j = 0; j < 30; j++)
-                {
+            {
                 double data = Math.Round(Arr[i, j], 2);
 
                 if (data >= 0)

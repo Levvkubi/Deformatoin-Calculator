@@ -19,6 +19,12 @@ public static class MGECalculator
                 {
                     int xmge = nt[k % 20, i]*3 + k/20; 
                     int ymge = nt[l % 20, i]*3 + l/20;
+                    if(xmge > ymge)
+                    {
+                        int temp = xmge;
+                        xmge = ymge;
+                        ymge = temp;
+                    }
                     mge[xmge, ymge] += currMge[k][l-k];
                 }
             }
@@ -26,6 +32,10 @@ public static class MGECalculator
         cc = calculateCurrMGE(dfixyz[0], dj[0], lambda, V, Mu);
         return mge;
     }
+    //private int getIndex(int[,] nt,int ind)
+    //{
+
+    //}
     private static double[][] calculateCurrMGE(double[,,] dfixyz,double[,,] dj, double lambda, double V, double Mu)
     {
         double[][] mge = new double[60][];
