@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+//using MathNet.Numerics.LinearAlgebra;
 
 public class DeformationCalculator : MonoBehaviour
 {
@@ -29,8 +30,8 @@ public class DeformationCalculator : MonoBehaviour
     [SerializeField] private bool showNT;
 
     [Space]
-    [SerializeField] private List<Vector2> ZP;
-    [SerializeField] private List<Vector2> ZU;
+    [SerializeField] private static List<Vector2> ZP;
+    [SerializeField] private static List<Vector2> ZU;
 
     [Space]
     [SerializeField] private int npq;
@@ -112,7 +113,34 @@ public class DeformationCalculator : MonoBehaviour
         writeMatrixIntoFile(MGE);
         writeMatrixIntoFile(mge);
 
+        //var F = FCalculator.GetF(NT, nX_amount, nY_amount, nZ_amount, AKT, nel);
+        //var MG_Matrix = Matrix<double>.Build.DenseOfArray(MGE);
+        //var F_Matrix = Matrix<double>.Build.DenseOfColumns(new List<double[]> { F });
+
+        //var U = MG_Matrix.Solve(F_Matrix).ToColumnArrays()[0];
+        //var U_SplittedByAxis = General_Calculator.Make2DArray(U, U.Length / 3, 3);
+
+        //var U_Transposed = General_Calculator.Transpose(U_SplittedByAxis);
+
+        //var AKT_Matrix = Matrix<double>.Build.DenseOfArray(AKT);
+
+        //var U_Matrix = Matrix<double>.Build.DenseOfArray(U_Transposed);
+
+        //var res = AKT_Matrix.Add(U_Matrix).ToArray();
+
+
         Debug.Log("gg");
+    }
+
+    public static int[,] GetZP()////////////////
+    {
+        int[,] res = new int[ZP.Count, 2];
+        for (int i = 0; i < ZP.Count; i++)
+        {
+            res[i, 0] = (int)ZP[i].x;
+            res[i, 1] = (int)ZP[i].y;
+        }
+        return res;
     }
     public static void writeMatrixIntoFile(double[][] Arr)
     {
@@ -182,7 +210,7 @@ public class DeformationCalculator : MonoBehaviour
         }
         File.WriteAllText(@"D:\Matrix.txt", res);
     }
-    private int[] sideToPoints(int elNT, int side)
+    public static int[] SideToPoints(int elNT, int side, int[,] NT)
     {
         int[] points = new int[8];
 
