@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -132,8 +132,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 273100446}
-  - component: {fileID: 273100449}
-  - component: {fileID: 273100448}
+  - component: {fileID: 273100447}
+  - component: {fileID: 273100445}
   m_Layer: 0
   m_Name: V2
   m_TagString: Untagged
@@ -141,6 +141,40 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &273100445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273100444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c52c298eb8e6b474393672118ae30f7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  el: 0
+  nx: 2
+  ny: 2
+  nz: 2
+  useCustomProportins: 0
+  ax: 2
+  ay: 2
+  az: 2
+  P: 1
+  E: 1
+  V: 0.3
+  Lambda: 0
+  Mu: 0
+  showNT: 0
+  ZP:
+  - {x: 0, y: 4}
+  ZU:
+  - {x: 1, y: 5}
+  npq: 0
+  nel: 0
+  ng: 0
+  NTMaxLen: 
 --- !u!4 &273100446
 Transform:
   m_ObjectHideFlags: 0
@@ -149,13 +183,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 273100444}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!114 &273100448
+--- !u!114 &273100447
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,43 +198,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 273100444}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8beb94567d59a849b2f9bf5d63cedd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  el: 0
-  nx: 1
-  ny: 1
-  nz: 1
-  useCustomProportins: 0
-  ax: 2
-  ay: 2
-  az: 2
-  E: 1
-  V: 0.3
-  Lambda: 0
-  Mu: 0
-  showNT: 0
-  ZP: []
-  ZU: []
-  npq: 0
-  nel: 0
-  ng: 0
-  NTMaxLen: 
---- !u!114 &273100449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 273100444}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbb4a9285c69cd84e9df8afc8261bc9c, type: 3}
+  m_Script: {fileID: 11500000, guid: 143198602b4dc2c4e8b8938d371018a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   diffEdges: 1
-  pointPrefab: {fileID: 3497740500094378342, guid: 35b21c460bacb3046966cab095304931, type: 3}
-  edgePrefab: {fileID: 107135912266624161, guid: 34df26ff4872f634a87a75b6e8753690, type: 3}
+  pointPrefab: {fileID: 3497740500094378342, guid: a78bc8d0dee4e294e98e49a389526a44, type: 3}
+  edgePrefab: {fileID: 107135912266624161, guid: d2e4d00aa4d35324d9bb88aebc67497c, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,6 +297,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &847317692
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 847317693}
+  m_Layer: 0
+  m_Name: 4- botton 5 - top
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &847317693
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 847317692}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,14 +439,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f48b9b8a0b2bc241a6d9811655f21d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nx: 5
-  ny: 49
-  nz: 2
-  distanceBetweenPoints: 1
-  vertices: []
-  edges: []
-  pointPrefab: {fileID: 3497740500094378342, guid: 35b21c460bacb3046966cab095304931, type: 3}
-  edgePrefab: {fileID: 107135912266624161, guid: 34df26ff4872f634a87a75b6e8753690, type: 3}
 --- !u!4 &1653936759
 Transform:
   m_ObjectHideFlags: 0

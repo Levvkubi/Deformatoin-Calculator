@@ -1,4 +1,4 @@
-public static class KramarMethod 
+public static class KramarMethod
 {
     public static double[] CalculateSLAR(double[,] coefficients, double[] constants)
     {

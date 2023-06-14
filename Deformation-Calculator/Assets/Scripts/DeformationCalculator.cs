@@ -1,8 +1,9 @@
+using MathNet.Numerics.LinearAlgebra;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-//using MathNet.Numerics.LinearAlgebra;
+
 
 public class DeformationCalculator : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class DeformationCalculator : MonoBehaviour
     [SerializeField] private int az;
 
     [Space]
+    [SerializeField] private double P = 100;
     [SerializeField] private double E = 1;
     [SerializeField] private double V = 0.3;
     [SerializeField] private double Lambda;
@@ -30,8 +32,8 @@ public class DeformationCalculator : MonoBehaviour
     [SerializeField] private bool showNT;
 
     [Space]
-    [SerializeField] private static List<Vector2> ZP;
-    [SerializeField] private static List<Vector2> ZU;
+    [SerializeField] private List<Vector2> ZP;
+    [SerializeField] private List<Vector2> ZU;
 
     [Space]
     [SerializeField] private int npq;
@@ -51,13 +53,18 @@ public class DeformationCalculator : MonoBehaviour
 
     private static float lx, ly, lz;
 
-    private GraphicsDrawer  drawer;
+    private GraphicsDrawer drawer;
+    public DrawerV2 drawerV2;
     void Start()
     {
         Lambda = E / ((1 + V) * (1 - 2 * V));
         Mu = E / (2 * (1 + V));
+        Debug.Log(1); 
 
-        drawer = GetComponent<GraphicsDrawer >();
+        drawer = GetComponent<GraphicsDrawer>();
+        //drawerV2 = GetComponent<DrawerV2>();
+        Debug.Log(2);
+
 
         if (useCustomProportins)
         {
@@ -77,17 +84,20 @@ public class DeformationCalculator : MonoBehaviour
         edgesDir = new List<int>();
 
         AKT = AKTGenerator.GenerateAKT(nx, ny, nz, lx, ly, lz, out npq, verticesIndx, edgesIndx, edgesDir);
+        Debug.Log("AKT");
+
         NT = NTCalculator.CalculateNT(nx, ny, nz, out nel);
+        Debug.Log("NT");
+
         ng = NTCalculator.CalcualteNg(NT, nel);
+        Debug.Log("NG");
 
         if (showNT)
             NTCalculator.logNT(NT, nel);
 
-        //AKT[0,0] = 0.2f;
-        //AKT[1,0] = 0.3f;
-        //AKT[2,0] = 0.4f;
+        //drawerV2.Draw( AKT, NT, Color.green);
 
-
+        Debug.Log("draw");
         drawer.Draw(npq, AKT, verticesIndx, edgesIndx, edgesDir, lx, ly, lz);
 
         DFIABG = DFIABGCalculator.CalculateDFIABG();
@@ -109,36 +119,37 @@ public class DeformationCalculator : MonoBehaviour
         //    }
         //}
         double[][] mge;
-        MGE = MGECalculator.CalculateMGE(DFIXYZ, DJ, AKT, NT, npq, nel, Lambda, V, Mu, out mge);
-        writeMatrixIntoFile(MGE);
-        writeMatrixIntoFile(mge);
+        MGE = MGECalculator.CalculateMGE(DFIXYZ, DJ, AKT, NT, GetArrFromList(ZU), npq, nel, Lambda, V, Mu, out mge);
+        //writeMatrixIntoFile(MGE);
+        //writeMatrixIntoFile(mge);
 
-        //var F = FCalculator.GetF(NT, nX_amount, nY_amount, nZ_amount, AKT, nel);
-        //var MG_Matrix = Matrix<double>.Build.DenseOfArray(MGE);
-        //var F_Matrix = Matrix<double>.Build.DenseOfColumns(new List<double[]> { F });
+        var F = FCalculator.CalculateF(NT, GetArrFromList(ZP), nx, ny, nz, AKT, nel, P);
+        var MG_Matrix = Matrix<double>.Build.DenseOfArray(MGE);
+        var F_Matrix = Matrix<double>.Build.DenseOfColumns(new List<double[]> { F });
 
-        //var U = MG_Matrix.Solve(F_Matrix).ToColumnArrays()[0];
-        //var U_SplittedByAxis = General_Calculator.Make2DArray(U, U.Length / 3, 3);
+        var U = MG_Matrix.Solve(F_Matrix).ToColumnArrays()[0];
+        var U_SplittedByAxis = Make2DArray(U, U.Length / 3, 3);
 
-        //var U_Transposed = General_Calculator.Transpose(U_SplittedByAxis);
+        var U_Transposed = Transpose(U_SplittedByAxis);
 
-        //var AKT_Matrix = Matrix<double>.Build.DenseOfArray(AKT);
+        var AKT_Matrix = Matrix<double>.Build.DenseOfArray(AKT);
 
-        //var U_Matrix = Matrix<double>.Build.DenseOfArray(U_Transposed);
+        var U_Matrix = Matrix<double>.Build.DenseOfArray(U_Transposed);
 
-        //var res = AKT_Matrix.Add(U_Matrix).ToArray();
+        var res = AKT_Matrix.Add(U_Matrix).ToArray();
+        //drawer.Draw(npq, res, verticesIndx, edgesIndx, edgesDir, lx, ly, lz);
+        drawerV2.Draw(res, NT, Color.green);
 
 
         Debug.Log("gg");
     }
-
-    public static int[,] GetZP()////////////////
+    public static int[,] GetArrFromList(List<Vector2> list)////////////////
     {
-        int[,] res = new int[ZP.Count, 2];
-        for (int i = 0; i < ZP.Count; i++)
+        int[,] res = new int[list.Count, 2];
+        for (int i = 0; i < list.Count; i++)
         {
-            res[i, 0] = (int)ZP[i].x;
-            res[i, 1] = (int)ZP[i].y;
+            res[i, 0] = (int)list[i].x;
+            res[i, 1] = (int)list[i].y;
         }
         return res;
     }
@@ -182,10 +193,10 @@ public class DeformationCalculator : MonoBehaviour
 
         for (int i = 0; i < Arr.GetLength(0); i++)
         {
-            if(i<10)
+            if (i < 10)
                 res += "      " + i.ToString();
             else
-                res += "     " +  i.ToString();
+                res += "     " + i.ToString();
         }
 
         res += "\n";
@@ -203,7 +214,7 @@ public class DeformationCalculator : MonoBehaviour
                     res += " ";
 
                 res += $"{data:f2} ";
-                    
+
             }
             res += "\n";
             res += "\n";
@@ -278,5 +289,36 @@ public class DeformationCalculator : MonoBehaviour
                 break;
         }
         return points;
+    }
+    public static T[,] Make2DArray<T>(T[] input, int height, int width)
+    {
+        T[,] output = new T[height, width];
+
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                output[i, j] = input[i * width + j];
+            }
+        }
+
+        return output;
+    }
+    public static double[,] Transpose(double[,] matrix)
+    {
+        var rows = matrix.GetLength(0);
+        var columns = matrix.GetLength(1);
+
+        var result = new double[columns, rows];
+
+        for (var c = 0; c < columns; c++)
+        {
+            for (var r = 0; r < rows; r++)
+            {
+                result[c, r] = matrix[r, c];
+            }
+        }
+
+        return result;
     }
 }

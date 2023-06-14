@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GraphicsDrawer  : MonoBehaviour
+public class GraphicsDrawer : MonoBehaviour
 {
     [SerializeField] private bool diffEdges;
 

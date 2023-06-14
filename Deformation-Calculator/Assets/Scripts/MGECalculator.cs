@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
 public static class MGECalculator
 {
     readonly static double[] C = { 5f / 9f, 8f / 9f, 5f / 9f };
-    public static double[,] CalculateMGE(double[][,,] dfixyz, double[][,,] dj, double[,] akt, int[,] nt, int npq, int nel, double lambda, double V, double Mu, out double[][] cc)
+    public static double[,] CalculateMGE(double[][,,] dfixyz, double[][,,] dj, double[,] akt, int[,] nt, int[,] ZU, int npq, int nel, double lambda, double V, double Mu, out double[][] cc)
     {
         int mgeSize = 3 * npq;
         double[,] mge = new double[mgeSize, mgeSize];
@@ -17,26 +15,47 @@ public static class MGECalculator
             {
                 for (int l = k; l < 60; l++)
                 {
-                    int xmge = nt[k % 20, i]*3 + k/20; 
-                    int ymge = nt[l % 20, i]*3 + l/20;
-                    if(xmge > ymge)
+                    int xmge = nt[k % 20, i] * 3 + k / 20;
+                    int ymge = nt[l % 20, i] * 3 + l / 20;
+                    if (xmge > ymge)
                     {
                         int temp = xmge;
                         xmge = ymge;
                         ymge = temp;
                     }
-                    mge[xmge, ymge] += currMge[k][l-k];
+                    mge[xmge, ymge] += currMge[k][l - k];
                 }
             }
         }
         cc = calculateCurrMGE(dfixyz[0], dj[0], lambda, V, Mu);
+
+
+        for (int i = 0; i < ZU.GetLength(0); i++)
+        {
+            int elemNum = ZU[i, 0];
+            int side = ZU[i, 1];
+            int[] NTpoints = DeformationCalculator.SideToPoints(elemNum,side,nt);
+
+
+            foreach (int point in NTpoints)
+            {
+                int rowIndex = point * 3;
+                int colIndex = point * 3;
+                for (int j = 0; j < 3; j++)
+                {
+                    mge[rowIndex, colIndex] = Math.Pow(10, 54);
+                    rowIndex++;
+                    colIndex++;
+                }
+            }
+        }
         return mge;
     }
     //private int getIndex(int[,] nt,int ind)
     //{
 
     //}
-    private static double[][] calculateCurrMGE(double[,,] dfixyz,double[,,] dj, double lambda, double V, double Mu)
+    private static double[][] calculateCurrMGE(double[,,] dfixyz, double[,,] dj, double lambda, double V, double Mu)
     {
         double[][] mge = new double[60][];
         for (int i = 0; i < 60; i++)
@@ -73,20 +92,20 @@ public static class MGECalculator
                                     + Mu * dfixyz[gaus, axis2, i] * dfixyz[gaus, axis1, j];
                             }
 
-                            curr *= C[m]; 
-                            curr *= C[n]; 
+                            curr *= C[m];
+                            curr *= C[n];
                             curr *= C[k];
 
                             curr *= DJCalculator.CalculateDeterminant3x3(dj, gaus);
 
-                            sum += curr; 
+                            sum += curr;
 
                             gaus++;
                         }
                     }
                 }
 
-                mge[p][l-p] = sum;
+                mge[p][l - p] = sum;
             }
         }
 

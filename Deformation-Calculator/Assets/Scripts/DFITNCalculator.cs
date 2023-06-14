@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public static class DFITNCalculator 
+public static class DFITNCalculator
 {
     static int[,] sidePoints = new int[,] { {-1, -1}, { 1, -1 }, { 1, 1 }, { -1, 1 },
                                     { 0, -1 }, { 1, 0 },  {0,1}, {-1,0} };
     public static double[,,] CalculateFITN()
     {
-        double[,,] FITN = new double[8,2,8];
+        double[,,] FITN = new double[8, 2, 8];
 
         double sq = Mathf.Sqrt(0.6f);
         int j = 0;
@@ -24,7 +22,7 @@ public static class DFITNCalculator
                         FITN[j, 0, i] = fiVerticle(n * sq, t * sq, sidePoints[i, 0], sidePoints[i, 1]);
                         FITN[j, 1, i] = fiVerticle(n * sq, t * sq, sidePoints[i, 0], sidePoints[i, 1]);
                     }
-                    else if(i == 5 || i == 7)
+                    else if (i == 5 || i == 7)
                     {
                         FITN[j, 0, i] = fiEdge(n * sq, t * sq, sidePoints[i, 0], sidePoints[i, 1]);
                         FITN[j, 1, i] = fiEdge(t * sq, n * sq, sidePoints[i, 1], sidePoints[i, 0]);
@@ -39,7 +37,7 @@ public static class DFITNCalculator
     }
     public static double[,,] CalculateDFITN()
     {
-        double[,,] DFITN = new double[9,2,8];
+        double[,,] DFITN = new double[9, 2, 8];
 
         double sq = Mathf.Sqrt(0.6f);
         int j = 0;
@@ -58,6 +56,6 @@ public static class DFITNCalculator
 
     public static double[,,] CalculateFi()
     {
-        return new double[1,1,1];
+        return new double[1, 1, 1];
     }
 }

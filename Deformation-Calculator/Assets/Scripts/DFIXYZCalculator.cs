@@ -5,24 +5,24 @@ public class DFIXYZCalculator
         double[][,,] dfixyz = new double[dj.Length][,,];
         for (int i = 0; i < dj.Length; i++)
         {
-            dfixyz[i] = calculateCurrDFIXYZ(dfiabg,dj[i]);
+            dfixyz[i] = calculateCurrDFIXYZ(dfiabg, dj[i]);
         }
 
         return dfixyz;
     }
-    private static double[,,] calculateCurrDFIXYZ(double[,,] dfiabg,double[,,] dj)
+    private static double[,,] calculateCurrDFIXYZ(double[,,] dfiabg, double[,,] dj)
     {
-        double[,,] dfixyz = new double[27,3,20];
+        double[,,] dfixyz = new double[27, 3, 20];
 
         for (int i = 0; i < 27; i++)
         {
-            double[,] currDj = new double[3, 3]; 
+            double[,] currDj = new double[3, 3];
 
             for (int j = 0; j < 3; j++)
             {
                 for (int k = 0; k < 3; k++)
                 {
-                    currDj[j,k] = dj[i,j,k];
+                    currDj[j, k] = dj[i, j, k];
                 }
             }
 
@@ -33,7 +33,7 @@ public class DFIXYZCalculator
 
                 for (int l = 0; l < 3; l++)
                 {
-                    dfixyz[i,l,j] = curXYZ[l];
+                    dfixyz[i, l, j] = curXYZ[l];
                 }
             }
         }

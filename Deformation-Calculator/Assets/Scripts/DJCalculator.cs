@@ -14,7 +14,7 @@ public static class DJCalculator
 
         return DJ;
     }
-    private static double[,,] calculateCurrDJ(double[,] AKT,int [,] NT, int el, double[,,] DFIABG)
+    private static double[,,] calculateCurrDJ(double[,] AKT, int[,] NT, int el, double[,,] DFIABG)
     {
         double[,,] DJ = new double[27, 3, 3];
 
@@ -76,7 +76,7 @@ public static class DJCalculator
         //                               FileShare.None);
         //fileStream.Write(res);
     }
-    public static double CalculateDeterminant3x3(double[,,] matrix,int el)
+    public static double CalculateDeterminant3x3(double[,,] matrix, int el)
     {
         //if(matrix.Length != 3 || matrix.LongLength != 3)
         //    throw new ArgumentException("Invalid matrix size");

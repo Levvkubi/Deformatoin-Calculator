@@ -1,6 +1,6 @@
 using System;
-using UnityEngine;
 using System.IO;
+using UnityEngine;
 
 public static class DFIABGCalculator
 {
@@ -13,7 +13,7 @@ public static class DFIABGCalculator
 
     public static double[,,] CalculateDFIABG()
     {
-        double[,,] DFIABG = new double[27,3,20];
+        double[,,] DFIABG = new double[27, 3, 20];
 
         double sq = Mathf.Sqrt(0.6f);
         int j = 0;

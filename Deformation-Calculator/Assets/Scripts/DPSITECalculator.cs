@@ -11,7 +11,7 @@ public class DPSITECalculator
         };
         double[,] modEtaiTaui = new double[EtaiTaui.GetLength(1), EtaiTaui.GetLength(0)];
 
-        for (int i = 0; i < EtaiTaui.GetLength(0); i++)
+        for (int i = 0; i < EtaiTaui.GetLength(0); i++)//////
         {
             for (int j = 0; j < EtaiTaui.GetLength(1); j++)
             {
